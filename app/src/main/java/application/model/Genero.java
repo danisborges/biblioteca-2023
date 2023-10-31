@@ -26,4 +26,5 @@ public class Genero {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
 }

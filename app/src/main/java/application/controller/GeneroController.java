@@ -13,58 +13,13 @@ import application.model.Genero;
 import application.model.GeneroRepository;
 
 // Página 19
-// EDIÇÃO DE ITENS
-@RequestMapping("/update")
-public String update(Model model, @RequestParam("id") int id) {
-    Optional<Genero> genero = generoRepo.findById(id);
-
-    if(genero.isPresent()) {
-        model.addAttribute("genero", genero.get());
-        return "/genero/update";
-    }
-    return "redirect:/genero/list";
-}
-
-@RequestMapping(value = "/update", method = RequestMethod.POST)
-public String update(
-    @RequestParam("id") int id,
-    @RequestParam("nome") String nome
-) {
-    Optional<Genero> genero = generoRepo.findById(id);
-
-    if(genero.isPresent()) {
-        genero.get().setNome(nome);
-
-        generoRepo.save(genero.get());
-    }
-    return "redirect:/genero/list";
-}
-
-// REMOÇÃO DE ITENS 
-@RequestMapping("/delete")
-public String delete(Model model, @RequestParam("id") int id) {
-    Optional<Genero> genero = generoRepo.findById(id);
-
-    if(genero.isPresent()) {
-        model.addAttribute("genero", genero.get());
-        return "/genero/delete";
-    }
-    return "redirect:/genero/list";
-}
-
-@RequestMapping(value = "/delete", method = RequestMethod.POST)
-public String delete(@RequestParam("id") int id) {
-    generoRepo.deleteById(id);
-    return "redirect:/genero/list";
-}
-// ---------
 
 @Controller
 @RequestMapping("/genero")
 public class GeneroController {
     @Autowired
     private GeneroRepository generoRepo;
-
+    
     @RequestMapping("/list")
     public String list(Model model) {
         model.addAttribute("generos", generoRepo.findAll());
@@ -83,6 +38,51 @@ public class GeneroController {
 
         generoRepo.save(genero);
 
+        return "redirect:/genero/list";
+    }
+
+        // EDIÇÃO DE ITENS
+    @RequestMapping("/update")
+    public String update(Model model, @RequestParam("id") int id) {
+        Optional<Genero> genero = generoRepo.findById(id);
+
+        if(genero.isPresent()) {
+            model.addAttribute("genero", genero.get());
+            return "/genero/update";
+        }
+        return "redirect:/genero/list";
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(
+        @RequestParam("id") int id,
+        @RequestParam("nome") String nome
+    ) {
+        Optional<Genero> genero = generoRepo.findById(id);
+
+        if(genero.isPresent()) {
+            genero.get().setNome(nome);
+
+            generoRepo.save(genero.get());
+        }
+        return "redirect:/genero/list";
+    }
+
+    // REMOÇÃO DE ITENS 
+    @RequestMapping("/delete")
+    public String delete(Model model, @RequestParam("id") int id) {
+        Optional<Genero> genero = generoRepo.findById(id);
+
+        if(genero.isPresent()) {
+            model.addAttribute("genero", genero.get());
+            return "/genero/delete";
+        }
+        return "redirect:/genero/list";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@RequestParam("id") int id) {
+        generoRepo.deleteById(id);
         return "redirect:/genero/list";
     }
 }
